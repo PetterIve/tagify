@@ -1,18 +1,9 @@
 import { useEffect, useState } from "react";
-import { Loader } from "../../components";
-import { fetchBff } from "../../util/fetchbff";
+import { Loader } from "../components";
+import { fetchBff } from "../util/fetchBff";
 import { SpotifyLoginComponent } from "./SpotifyLoginComponent";
 
-export type OnLoginCallback = () => {
-  accessToken: string;
-  refreshToken: string;
-};
-
-interface Props {
-  onLogin: OnLoginCallback;
-}
-
-export const SpotifyLoginContainer = ({ onLogin }: Props) => {
+export const SpotifyLoginContainer = () => {
   const [authorizationUrl, setAuthorizationUrl] = useState<string>();
   useEffect(() => {
     const fetchAuthUrl = async () => {

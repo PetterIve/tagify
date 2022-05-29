@@ -1,12 +1,12 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { AuthProvider } from "../auth/AuthProvider";
+import { SpotifyProvider } from "../spotify/SpotifyProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <AuthProvider>
+    <SpotifyProvider>
       <Component {...pageProps} />
-    </AuthProvider>
+    </SpotifyProvider>
   );
 }
 

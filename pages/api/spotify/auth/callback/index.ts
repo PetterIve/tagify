@@ -12,6 +12,8 @@ var spotifyApi = new SpotifyWebApi({
   redirectUri: process.env.SPOTIFY_REDIRECT_URI,
 });
 
+const url = "localhost:3000";
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -25,5 +27,5 @@ export default async function handler(
     accessToken: result.body.access_token,
   };
 
-  res.status(200).json({ accessToken: tokens.accessToken });
+  res.redirect(`http://${url}?accessToken=${tokens.accessToken}`);
 }

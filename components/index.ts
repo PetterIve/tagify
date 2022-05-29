@@ -1,3 +1,2 @@
-export * from "./Col";
-export * from "./Loader";
-export * from "./Row";
+export * from "./atoms";
+export * from "./organisms";
