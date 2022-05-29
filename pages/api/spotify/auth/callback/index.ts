@@ -16,8 +16,6 @@ export default async function handler(
 
   const result = await spotifyApi.authorizationCodeGrant(code as string);
 
-  console.log({ result });
-
   const tokens = {
     refreshToken: result.body.refresh_token,
     accessToken: result.body.access_token,

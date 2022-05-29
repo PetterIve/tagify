@@ -30,8 +30,7 @@ export const SpotifyProvider = ({ children }: PropsWithChildren<{}>) => {
   const [spotifyApi, setSpotifyApi] = useState<SpotifyWebApi>();
 
   useEffect(() => {
-    const doStuff = async () => {
-      console.log({ accessToken });
+    const initSpotifyApi = async () => {
       if (!accessToken) {
         return setSpotifyApi(undefined);
       }
@@ -41,7 +40,7 @@ export const SpotifyProvider = ({ children }: PropsWithChildren<{}>) => {
 
       setSpotifyApi(spotifyApi);
     };
-    doStuff();
+    initSpotifyApi();
   }, [accessToken]);
 
   if (!spotifyApi || !accessToken) {
