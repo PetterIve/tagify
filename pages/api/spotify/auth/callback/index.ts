@@ -1,16 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import SpotifyWebApi from "spotify-web-api-node";
+import { spotifyApi } from "../../../../../services/SpotifyApi";
 
 type Data = {
   accessToken: string;
 };
-
-var spotifyApi = new SpotifyWebApi({
-  clientId: process.env.SPOTIFY_CLIENT_ID,
-  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri: process.env.SPOTIFY_REDIRECT_URI,
-});
 
 const url = "localhost:3000";
 
@@ -21,6 +15,8 @@ export default async function handler(
   const { code, state } = req.query;
 
   const result = await spotifyApi.authorizationCodeGrant(code as string);
+
+  console.log({ result });
 
   const tokens = {
     refreshToken: result.body.refresh_token,

@@ -10,6 +10,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 import { SpotifyLoginContainer } from "./SpotifyLoginContainer";
 
 type SpotifyContextState = {
+  accessToken: string;
   spotifyApi: SpotifyWebApi;
 };
 
@@ -43,12 +44,12 @@ export const SpotifyProvider = ({ children }: PropsWithChildren<{}>) => {
     doStuff();
   }, [accessToken]);
 
-  if (!spotifyApi) {
+  if (!spotifyApi || !accessToken) {
     return <SpotifyLoginContainer />;
   }
 
   return (
-    <SpotifyContext.Provider value={{ spotifyApi }}>
+    <SpotifyContext.Provider value={{ spotifyApi, accessToken }}>
       {children}
     </SpotifyContext.Provider>
   );

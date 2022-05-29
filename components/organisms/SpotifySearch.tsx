@@ -38,6 +38,7 @@ export const SpotifySearch = () => {
       <Input value={searchValue} onValueChanged={setSearchValue} label="Søk" />
       {tracks?.items.map((track) => (
         <SpotifyTrack
+          trackId={track.id}
           key={track.id}
           imageSrc={track.album.images[0].url}
           trackName={track.name}
