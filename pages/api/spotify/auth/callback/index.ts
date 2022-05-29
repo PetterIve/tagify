@@ -1,21 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-var SpotifyWebApi = require("spotify-web-api-node");
+import SpotifyWebApi from "spotify-web-api-node";
 
 type Data = {
-  name: string;
+  accessToken: string;
 };
 
-var scopes = ["user-read-private", "user-read-email"],
-  redirectUri = "https://example.com/callback",
-  clientId = "5fe01282e44241328a84e7c5cc169165",
-  state = "some-state-of-my-choice";
+var spotifyApi = new SpotifyWebApi({
+  clientId: process.env.SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+  redirectUri: process.env.SPOTIFY_REDIRECT_URI,
+});
 
-console.log({ clientId: process.env.SPOTIFY_CLIENT_ID });
-
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  res.status(200).json({ name: "John Doe" });
+  const { code, state } = req.query;
+
+  const result = await spotifyApi.authorizationCodeGrant(code as string);
+
+  const tokens = {
+    refreshToken: result.body.refresh_token,
+    accessToken: result.body.access_token,
+  };
+
+  res.status(200).json({ accessToken: tokens.accessToken });
 }

@@ -3,5 +3,17 @@ interface Props {
 }
 
 export const SpotifyLoginComponent = ({ authorizationUrl }: Props) => {
-  return <a href={authorizationUrl}>Logg inn med Spotify</a>;
+  return (
+    <a
+      href={authorizationUrl}
+      style={{
+        borderRadius: 1337,
+        background: "#1DB954",
+        padding: 20,
+        color: "white",
+      }}
+    >
+      Logg inn med Spotify
+    </a>
+  );
 };
