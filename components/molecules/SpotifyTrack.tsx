@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
+import { useSpotify } from "../../spotify/SpotifyProvider";
+import { postBff } from "../../util/fetchBff";
 import { Row } from "../atoms";
 import { Button } from "../atoms/Button";
 import { Input } from "../atoms/Input";
@@ -8,13 +10,26 @@ interface Props {
   imageSrc: string;
   trackName: string;
   artistName: string;
+  trackId: string;
 }
 
-export const SpotifyTrack = ({ imageSrc, trackName, artistName }: Props) => {
+export const SpotifyTrack = ({
+  imageSrc,
+  trackName,
+  artistName,
+  trackId,
+}: Props) => {
+  const { accessToken } = useSpotify();
+
   const [tags, setTags] = useState<string[]>([]);
   const [tagValue, setTagValue] = useState<string>("");
 
   const submitTag = async () => {
+    await postBff({
+      url: `api/tracks/${trackId}/tags`,
+      data: { tag: tagValue, trackId },
+      accessToken,
+    });
     setTags([...tags, tagValue]);
     setTagValue("");
   };

@@ -1,20 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import SpotifyWebApi from "spotify-web-api-node";
-
-const redirectUri = process.env.SPOTIFY_REDIRECT_URI;
-const clientId = process.env.SPOTIFY_CLIENT_ID;
-
-const spotifyApi = new SpotifyWebApi({
-  redirectUri,
-  clientId,
-});
+import { spotifyApi } from "../../../../../services/SpotifyApi";
 
 type Data = {
   authorizationUrl: string;
 };
 
-const scopes = ["user-read-private", "user-read-email"],
+const scopes = ["user-read-private"],
   state = "some-state-of-my-choice";
 
 export default function handler(
