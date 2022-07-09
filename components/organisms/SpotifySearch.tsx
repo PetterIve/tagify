@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSpotify } from "../../spotify/SpotifyProvider";
-import { Col, Loader } from "../atoms";
+import { Loader } from "../atoms";
 import { Input } from "../atoms/Input";
 import { SpotifyTrack } from "../molecules/SpotifyTrack";
 
@@ -34,17 +34,25 @@ export const SpotifySearch = () => {
   }
 
   return (
-    <Col>
-      <Input value={searchValue} onValueChanged={setSearchValue} label="Søk" />
-      {tracks?.items.map((track) => (
-        <SpotifyTrack
-          trackId={track.id}
-          key={track.id}
-          imageSrc={track.album.images[0].url}
-          trackName={track.name}
-          artistName={track.artists[0].name}
-        />
-      ))}
-    </Col>
+    <div className="flex-1">
+      <Input
+        value={searchValue}
+        onValueChanged={setSearchValue}
+        placeholder="Search"
+      />
+      {tracks && (
+        <div>
+          {tracks.items.map((track) => (
+            <SpotifyTrack
+              trackId={track.id}
+              key={track.id}
+              imageSrc={track.album.images[0].url}
+              trackName={track.name}
+              artistName={track.artists[0].name}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 };

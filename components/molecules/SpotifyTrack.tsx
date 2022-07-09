@@ -2,9 +2,10 @@ import Image from "next/image";
 import { useState } from "react";
 import { useSpotify } from "../../spotify/SpotifyProvider";
 import { postBff } from "../../util/fetchBff";
-import { Row } from "../atoms";
 import { Button } from "../atoms/Button";
+import { Form } from "../atoms/Form";
 import { Input } from "../atoms/Input";
+import { Tag } from "../atoms/Tag";
 
 interface Props {
   imageSrc: string;
@@ -21,7 +22,7 @@ export const SpotifyTrack = ({
 }: Props) => {
   const { accessToken } = useSpotify();
 
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(["2022", "party", "edm"]);
   const [tagValue, setTagValue] = useState<string>("");
 
   const submitTag = async () => {
@@ -35,19 +36,29 @@ export const SpotifyTrack = ({
   };
 
   return (
-    <Row>
-      <Image src={imageSrc} alt="Track image" height={300} width={300} />
-      <p>
-        <b>{artistName}</b>
-      </p>
-      <p>{trackName}</p>
-      {tags.map((tag) => (
-        <p style={{ borderRadius: 1337, background: "pink" }} key={tag}>
-          {tag}
+    <div className="flex">
+      <div>
+        <Image src={imageSrc} alt="Track image" height={300} width={300} />
+        <p>
+          <b>{artistName}</b>
         </p>
-      ))}
-      <Input value={tagValue} onValueChanged={setTagValue} label="Add tag" />
-      <Button text="Add tag" onClick={submitTag} />
-    </Row>
+        <p>{trackName}</p>
+      </div>
+      <ol className="space-y-1">
+        {tags.map((tag) => (
+          <li key={tag}>
+            <Tag text={tag} />
+          </li>
+        ))}
+      </ol>
+      <Form className="flex flex-col" onSubmit={submitTag}>
+        <Input
+          value={tagValue}
+          onValueChanged={setTagValue}
+          placeholder="Enter tag"
+        />
+        <Button className="mt-2" type="submit" text="Save tag" />
+      </Form>
+    </div>
   );
 };

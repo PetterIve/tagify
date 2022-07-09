@@ -41,7 +41,7 @@ export default async function handler(
   }
 
   try {
-    await storeTag({ userId, trackId: body.trackId, tag: body.tag });
+    await readUserData({ userId });
 
     return res.status(200).json({ yahoo: "MARIO" });
   } catch (err) {
@@ -51,20 +51,12 @@ export default async function handler(
 
 const client = new MongoClient(process.env.MONGO_CONNECTION_URL as string);
 let hasConnected = false;
-type MongoTrack = { trackId: string; tags: string[] };
+type MongoTrack = ;
 type MongoUser = { userId: string; tracks: MongoTrack[] };
 type MongoUserDocument = Document & MongoUser;
 let userCollection: Collection<MongoUserDocument> | undefined;
 
-const storeTag = async ({
-  userId,
-  trackId,
-  tag,
-}: {
-  userId: string;
-  trackId: string;
-  tag: string;
-}) => {
+const readUserData = async ({ userId }: { userId: string }) => {
   if (!userCollection) {
     await client.connect();
     hasConnected = true;
@@ -74,22 +66,5 @@ const storeTag = async ({
 
   const result = await userCollection.findOne({ userId });
 
-  if (result === null) {
-    await userCollection.insertOne({
-      userId,
-      tracks: [{ trackId, tags: [tag] }],
-    });
-  } else {
-    if (result.tracks.find((track) => track.trackId === trackId)) {
-      await userCollection.updateOne(
-        { userId, "tracks.trackId": trackId },
-        { $addToSet: { "tracks.$.tags": tag } }
-      );
-    } else {
-      await userCollection.updateOne(
-        { userId },
-        { $push: { tracks: { trackId, tags: [tag] } } }
-      );
-    }
-  }
+
 };

@@ -1,4 +1,4 @@
-import "../styles/globals.css";
+import "../globals.css";
 import type { AppProps } from "next/app";
 import { SpotifyProvider } from "../spotify/SpotifyProvider";
 

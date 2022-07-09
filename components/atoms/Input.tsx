@@ -1,26 +1,25 @@
-import { randomUUID } from "crypto";
 import { v4 } from "uuid";
-import { Col } from "./Col";
 
 interface Props {
   value: string;
   onValueChanged: (newValue: string) => void;
-  label: string;
+  placeholder: string;
 }
 
-export const Input = ({ value, onValueChanged, label }: Props) => {
+export const Input = ({ value, onValueChanged, placeholder }: Props) => {
   const id = v4();
 
   return (
-    <Col>
-      <label htmlFor={id}>{label}</label>
+    <div className="flex-col flex">
       <input
+        placeholder={placeholder}
+        className="border-black-500 border-2 rounded-full p-2 pl-4"
         id={id}
         value={value}
         onChange={(e) => {
           onValueChanged(e.target.value);
         }}
       />
-    </Col>
+    </div>
   );
 };
