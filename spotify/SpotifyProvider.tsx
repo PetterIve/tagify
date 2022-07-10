@@ -32,7 +32,6 @@ export const SpotifyProvider = ({ children }: PropsWithChildren<{}>) => {
 
   useEffect(() => {
     const initSpotifyApi = async () => {
-      console.log({ accessToken });
       if (!accessToken) {
         localStorageAccessToken.set(undefined);
         return setSpotifyApi(undefined);

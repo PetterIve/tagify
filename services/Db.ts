@@ -22,15 +22,15 @@ const Db = (tagCollection: TagCollection) => ({
   }) => {
     const userData = await tagCollection.findOne({ userId });
     if (!userData) {
-      throw new Error(`User with id ${userId} not found`);
+      return { type: "USER_NOT_FOUND" };
     }
 
     const track = userData.tracks.find((track) => track.trackId === trackId);
     if (!track) {
-      throw new Error(`Track with id ${trackId} for user ${userId} not found`);
+      return { type: "TRACK_NOT_FOUND" };
     }
 
-    return track;
+    return { type: "TRACK_FOUND", track };
   },
 });
 

@@ -36,11 +36,15 @@ export default async function handler(
     const userId = userResult.body.id;
     const trackId = req.query.id as string;
 
-    const track = await (
+    const dbResult = await (
       await getDb()
     ).readTagsForTrackForUser({ userId, trackId });
 
-    return res.status(200).json({ track });
+    if (dbResult.type === "TRACK_FOUND") {
+      return res.status(200).json({ track: dbResult.track });
+    }
+
+    return res.status(404).json({ reason: dbResult.type });
   } catch (err) {
     console.log({ err });
 

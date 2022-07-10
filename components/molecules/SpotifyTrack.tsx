@@ -25,22 +25,28 @@ export const SpotifyTrack = ({
 
   useEffect(() => {
     async function fetchTrack() {
-      const result = await fetchBff({
+      const trackResult = await fetchBff({
         url: `/api/me/tracks/${trackId}`,
       });
 
-      setTags(result.track.tags);
+      if (trackResult.track) {
+        setTags(trackResult.track.tags);
+      }
     }
 
     fetchTrack();
   }, [trackId]);
 
   const submitTag = async () => {
-    await postBff({
-      url: `api/tracks/${trackId}/tags`,
-      data: { tag: tagValue, trackId },
-    });
-    setTags([...tags, tagValue]);
+    if (!tags.includes(tagValue)) {
+      await postBff({
+        url: `api/tracks/${trackId}/tags`,
+        data: { tag: tagValue, trackId },
+      });
+
+      setTags([...tags, tagValue]);
+    }
+
     setTagValue("");
   };
 
