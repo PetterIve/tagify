@@ -41,7 +41,7 @@ export default async function handler(
   }
 
   try {
-    await readUserData({ userId });
+    const userData = await readUserData({ userId });
 
     return res.status(200).json({ yahoo: "MARIO" });
   } catch (err) {
@@ -51,7 +51,7 @@ export default async function handler(
 
 const client = new MongoClient(process.env.MONGO_CONNECTION_URL as string);
 let hasConnected = false;
-type MongoTrack = ;
+type MongoTrack = {};
 type MongoUser = { userId: string; tracks: MongoTrack[] };
 type MongoUserDocument = Document & MongoUser;
 let userCollection: Collection<MongoUserDocument> | undefined;
@@ -65,6 +65,4 @@ const readUserData = async ({ userId }: { userId: string }) => {
   }
 
   const result = await userCollection.findOne({ userId });
-
-
 };

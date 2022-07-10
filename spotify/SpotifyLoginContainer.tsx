@@ -7,7 +7,9 @@ export const SpotifyLoginContainer = () => {
   const [authorizationUrl, setAuthorizationUrl] = useState<string>();
   useEffect(() => {
     const fetchAuthUrl = async () => {
-      const result = await fetchBff("api/spotify/auth/authorization-url");
+      const result = await fetchBff({
+        url: "api/spotify/auth/authorization-url",
+      });
       setAuthorizationUrl(result.authorizationUrl);
     };
 

@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import SpotifyWebApi from "spotify-web-api-node";
+import { localStorageAccessToken } from "../util/localStorage";
 import { SpotifyLoginContainer } from "./SpotifyLoginContainer";
 
 type SpotifyContextState = {
@@ -31,7 +32,9 @@ export const SpotifyProvider = ({ children }: PropsWithChildren<{}>) => {
 
   useEffect(() => {
     const initSpotifyApi = async () => {
+      console.log({ accessToken });
       if (!accessToken) {
+        localStorageAccessToken.set(undefined);
         return setSpotifyApi(undefined);
       }
 
@@ -39,6 +42,7 @@ export const SpotifyProvider = ({ children }: PropsWithChildren<{}>) => {
       spotifyApi.setAccessToken(accessToken);
 
       setSpotifyApi(spotifyApi);
+      localStorageAccessToken.set(accessToken);
     };
     initSpotifyApi();
   }, [accessToken]);

@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSpotify } from "../../spotify/SpotifyProvider";
-import { postBff } from "../../util/fetchBff";
+import { fetchBff, postBff } from "../../util/fetchBff";
 import { Button } from "../atoms/Button";
 import { Form } from "../atoms/Form";
 import { Input } from "../atoms/Input";
@@ -20,16 +20,25 @@ export const SpotifyTrack = ({
   artistName,
   trackId,
 }: Props) => {
-  const { accessToken } = useSpotify();
-
-  const [tags, setTags] = useState<string[]>(["2022", "party", "edm"]);
+  const [tags, setTags] = useState<string[]>([]);
   const [tagValue, setTagValue] = useState<string>("");
+
+  useEffect(() => {
+    async function fetchTrack() {
+      const result = await fetchBff({
+        url: `/api/me/tracks/${trackId}`,
+      });
+
+      setTags(result.track.tags);
+    }
+
+    fetchTrack();
+  }, [trackId]);
 
   const submitTag = async () => {
     await postBff({
       url: `api/tracks/${trackId}/tags`,
       data: { tag: tagValue, trackId },
-      accessToken,
     });
     setTags([...tags, tagValue]);
     setTagValue("");

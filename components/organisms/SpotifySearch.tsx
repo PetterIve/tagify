@@ -42,7 +42,7 @@ export const SpotifySearch = () => {
       />
       {tracks && (
         <div>
-          {tracks.items.map((track) => (
+          {tracks.items.slice(0, 1).map((track) => (
             <SpotifyTrack
               trackId={track.id}
               key={track.id}
